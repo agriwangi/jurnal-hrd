@@ -1,0 +1,52 @@
+{
+  "name": "Jurnal HRD — Agri Wangi Berry",
+  "short_name": "Jurnal HRD",
+  "description": "Data karyawan, absensi selfie, dan payroll Agri Wangi Berry.",
+  "lang": "id",
+  "dir": "ltr",
+  "id": "./",
+  "start_url": "./#/masuk",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#0F5F5C",
+  "categories": [
+    "business",
+    "productivity"
+  ],
+  "icons": [
+    {
+      "src": "img/pwa-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "img/pwa-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "img/pwa-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Absen Selfie",
+      "short_name": "Absen",
+      "url": "./#/absen",
+      "icons": [
+        {
+          "src": "img/pwa-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}

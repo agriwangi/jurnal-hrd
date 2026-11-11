@@ -1,4 +1,4 @@
-/* Jurnal HRD v2.7.0-a — js/app.js: halaman depan (landing), layar Masuk, kerangka aplikasi, penjaga rute, Pengguna, Akun. */
+/* Jurnal HRD v2.7.0-b — js/app.js: halaman depan (landing), layar Masuk, kerangka aplikasi, penjaga rute, Pengguna, Akun. */
 (function () {
   'use strict';
   var h = V26.h, ikon = V26.ikon, api = V26.api;
@@ -49,6 +49,30 @@
     else if (aktif === 'pengaturan') M.pengaturan.buka(halaman, p[1]);
     else M.grafik.bukaDasbor(halaman);
   }
+  /* ---------- PWA: pasang di layar utama HP ---------- */
+  var tundaPasang = null;
+  function sudahTerpasang() { try { return (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true; } catch (e) { return false; } }
+  window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); tundaPasang = e; });
+  window.addEventListener('appinstalled', function () { tundaPasang = null; [].forEach.call(document.querySelectorAll('.pasang-btn'), function (b) { b.classList.add('v26-sembunyi'); }); V26.toast('Jurnal HRD sudah terpasang di layar utama HP Anda'); });
+  function panduanPasang() {
+    var ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    var langkahA = ['Buka alamat ini di Chrome.', 'Ketuk menu titik tiga (⋮) di pojok kanan atas.', 'Pilih "Instal aplikasi" atau "Tambahkan ke layar utama", lalu ketuk Instal.'];
+    var langkahI = ['Buka alamat ini di Safari (bukan Chrome).', 'Ketuk tombol Bagikan (kotak dengan panah ke atas) di bawah layar.', 'Gulir lalu pilih "Tambah ke Layar Utama", lalu ketuk Tambah.'];
+    function daftar(j, l) { return h('div', { gaya: 'margin-top:12px' }, h('b', null, j), h('ol', { gaya: 'margin:6px 0 0;padding-left:20px;line-height:22px' }, l.map(function (x) { return h('li', null, x); }))); }
+    V26.laci({ judul: 'Pasang di HP', tengah: true, sub: 'Jadi ikon di layar utama, terbuka layar penuh seperti aplikasi biasa.',
+      isi: h('div', null, ios ? [daftar('iPhone / iPad', langkahI), daftar('Android', langkahA)] : [daftar('Android', langkahA), daftar('iPhone / iPad', langkahI)], h('p.v26-kecil.v26-redup', { gaya: 'margin-top:12px' }, 'Tidak perlu toko aplikasi dan tidak memakan banyak ruang. Pembaruan otomatis setiap Anda membuka aplikasi.')) });
+  }
+  function pasangSekarang() {
+    if (tundaPasang) { var t = tundaPasang; tundaPasang = null; t.prompt(); return t.userChoice.catch(function () {}); }
+    panduanPasang();
+  }
+  function tombolPasang(ikonSaja) {
+    if (sudahTerpasang()) return null;
+    var b = h('button.v26-btn.pasang-btn' + (ikonSaja ? '.ikon' : ''), { type: 'button', title: 'Pasang di HP', 'aria-label': 'Pasang aplikasi di HP', onclick: pasangSekarang }, ikon('unduh'), ikonSaja ? null : 'Pasang di HP');
+    return b;
+  }
+  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
+
   function tombolTema() {
     var t = h('button.v26-btn.ikon', { type: 'button', title: 'Ganti tema', 'aria-label': 'Ganti tema terang atau gelap' }, ikon(V26.tema() === 'gelap' ? 'matahari' : 'bulan'));
     t.addEventListener('click', function () { var baru = V26.tema() === 'gelap' ? 'terang' : 'gelap'; V26.tema(baru); V26.isi(t, ikon(baru === 'gelap' ? 'matahari' : 'bulan')); if (kerangkaAda) arahkan(); });
@@ -75,7 +99,7 @@
       h('header.lp-atas', null, h('div.v26-baris', null, h('img.awb-logo', { src: 'img/logo-awb.png', alt: 'Agri Wangi Berry', height: 44 }), h('b', { gaya: 'font-size:16px;opacity:.8;border-left:1px solid var(--bd);padding-left:12px' }, 'Jurnal HRD')), h('div.v26-baris', null, tombolTema(), h('a.v26-btn.utama', { href: '#/masuk' }, 'Masuk'))),
       h('section.lp-hero', null, h('span.v26-lencana.pr', null, 'Versi 2.7.0 · Database, Super Admin, Selfie'), h('h1', null, 'Data karyawan, absensi, dan payroll yang rapi dan bisa dipercaya'),
         h('p', null, 'Jurnal HRD membantu tim HR mengelola data dari satu tempat: cepat diisi, mudah diperiksa, dan setiap angka bisa ditelusuri asalnya.'),
-        h('div.v26-baris.bungkus', { gaya: 'justify-content:center' }, h('a.v26-btn.utama', { href: '#/masuk', gaya: 'height:48px;padding:0 24px;font-size:15px' }, 'Masuk ke Aplikasi', ikon('kanan')), h('a.v26-btn', { href: '#fitur', gaya: 'height:48px;padding:0 20px', onclick: function (e) { e.preventDefault(); document.getElementById('fitur').scrollIntoView({ behavior: 'smooth' }); } }, 'Lihat Fitur'))),
+        h('div.v26-baris.bungkus', { gaya: 'justify-content:center' }, h('a.v26-btn.utama', { href: '#/masuk', gaya: 'height:48px;padding:0 24px;font-size:15px' }, 'Masuk ke Aplikasi', ikon('kanan')), h('a.v26-btn', { href: '#fitur', gaya: 'height:48px;padding:0 20px', onclick: function (e) { e.preventDefault(); document.getElementById('fitur').scrollIntoView({ behavior: 'smooth' }); } }, 'Lihat Fitur'), tombolPasang())),
       h('section.lp-fitur', { id: 'fitur' }, h('h2', null, 'Yang bisa dikerjakan sekarang'), h('div.v26-kisi.k3', null, FITUR.map(function (f) { return h('div.v26-kartu.isi', null, h('div.lp-ikon', null, ikon(f[0])), h('h3', { gaya: 'margin:10px 0 4px' }, f[1]), h('p.v26-redup', null, f[2])); }))),
       h('section.lp-fitur', null, h('h2', null, 'Mulai dalam tiga langkah'), h('div.v26-kisi.k3', null, [['1', 'Masuk', 'Pakai nama pengguna dan kata sandi dari Admin perusahaan Anda.'], ['2', 'Lengkapi Master Data', 'Isi langsung atau impor dari Excel yang sudah Anda punya.'], ['3', 'Pantau lewat Dashboard', 'Lihat ringkasan dan pilih model grafik yang paling mudah dibaca.']].map(function (l) {
         return h('div.v26-kartu.isi', null, h('div.lp-nomor', null, l[0]), h('h3', { gaya: 'margin:10px 0 4px' }, l[1]), h('p.v26-redup', null, l[2])); }))),
@@ -149,8 +173,8 @@
     var akun = h('button.v26-avatar', { type: 'button', title: 'Akun: ' + user.nama, 'aria-label': 'Buka akun ' + user.nama, gaya: 'border:0;cursor:pointer' }, String(user.nama || '?').slice(0, 2).toUpperCase());
     akun.addEventListener('click', function () { laciAkun(user); });
     V26.isi(akar, h('div.v26-app', null,
-      h('aside.v26-sisi', null, h('div.v26-merek', null, h('img', { src: 'img/ikon-awb.png', alt: 'AWB', width: 34, height: 34 }), h('div', null, h('b', null, 'Jurnal HRD'), h('div.v26-kecil.v26-redup', null, 'v2.7.0-a'))), menuEl, h('div.v26-kecil.v26-redup', { gaya: 'padding:12px 16px;border-top:1px solid var(--bd)' }, 'A Mustopa F · 085956686001')),
-      h('div.v26-utama', null, h('header.v26-atas', null, remah, h('div.v26-baris', null, contoh, h('div.v26-desktop', { gaya: 'text-align:right;line-height:15px' }, h('b.v26-kecil', null, user.nama), h('div.v26-kecil.v26-redup', null, user.peran)), akun, tombolTema())), halaman)), bawahEl);
+      h('aside.v26-sisi', null, h('div.v26-merek', null, h('img', { src: 'img/ikon-awb.png', alt: 'AWB', width: 34, height: 34 }), h('div', null, h('b', null, 'Jurnal HRD'), h('div.v26-kecil.v26-redup', null, 'v2.7.0-b'))), menuEl, h('div.v26-kecil.v26-redup', { gaya: 'padding:12px 16px;border-top:1px solid var(--bd)' }, 'A Mustopa F · 085956686001')),
+      h('div.v26-utama', null, h('header.v26-atas', null, remah, h('div.v26-baris', null, contoh, h('div.v26-desktop', { gaya: 'text-align:right;line-height:15px' }, h('b.v26-kecil', null, user.nama), h('div.v26-kecil.v26-redup', null, user.peran)), akun, tombolPasang(true), tombolTema())), halaman)), bawahEl);
     if (JH.boleh('admin')) api('ujiInfo').then(function (i) { if (!i.adaKaryawan) contoh.classList.remove('v26-sembunyi'); }, function () {});
   }
   function laciAkun(user) {

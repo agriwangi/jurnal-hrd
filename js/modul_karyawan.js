@@ -1,4 +1,4 @@
-/* Jurnal HRD v2.7.0-a — modul layar DATA KARYAWAN: daftar + status akun absen selfie + unggah Database Karyawan (Excel/CSV) yang menyesuaikan diri.
+/* Jurnal HRD v2.7.0-b — modul layar DATA KARYAWAN: daftar + status akun absen selfie + unggah Database Karyawan (Excel/CSV) yang menyesuaikan diri.
    Judul kolom tidak harus sama: baris judul dicari sendiri, kolom dikenali lewat kamus, kolom baru ditambahkan otomatis, dan pemetaan bisa diubah sebelum disimpan. */
 V26.modul.karyawan = (function () {
   'use strict';

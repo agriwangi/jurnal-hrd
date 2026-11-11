@@ -1,4 +1,4 @@
-/* Jurnal HRD v2.7.0-a — modul layar PENGATURAN (khusus Super Admin): pusat pengaturan, Hak Akses per peran, Akun & Absen Selfie.
+/* Jurnal HRD v2.7.0-b — modul layar PENGATURAN (khusus Super Admin): pusat pengaturan, Hak Akses per peran, Akun & Absen Selfie.
    Server menolak semua aksi pengaturan untuk selain Super Admin; menu yang disembunyikan hanyalah kenyamanan. */
 V26.modul.pengaturan = (function () {
   'use strict';

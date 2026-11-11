@@ -1,4 +1,4 @@
-/* Jurnal HRD v2.7.0-a — js/api.js: sesi dan pemanggil backend (fetch ke Apps Script /exec).
+/* Jurnal HRD v2.7.0-b — js/api.js: sesi dan pemanggil backend (fetch ke Apps Script /exec).
    Lapisan kecepatan: (1) permintaan baca yang berbarengan digabung jadi SATU perjalanan ke server,
    (2) hasil baca disimpan 60 detik sehingga pindah menu terasa seketika, (3) simpanan dibuang begitu ada perubahan data,
    (4) baca diulang otomatis bila jaringan putus, (5) server dibangunkan saat halaman dibuka, (6) waktu tiap panggilan dicatat (JH.perf()). */
