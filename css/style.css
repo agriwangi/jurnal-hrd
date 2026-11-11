@@ -1,4 +1,4 @@
-/* Jurnal HRD v2.6.0-t1r — css/style.css */
+/* Jurnal HRD v2.6.1-a — css/style.css */
 /* Jurnal HRD v2.6.0-t1 — gaya modul baru ("Precision Field & Ledger").
    Semua kelas berawalan v26- dan berada di bawah .v26 agar tidak menyentuh tampilan v2.5.1. */
 .v26{--pr:#0F5F5C;--pr-h:#0B4744;--pr-a:#083533;--pr-t:#E6F2F1;--on-pr:#fff;--ak:#D97706;--ak-t:#FEF3C7;--ak-tx:#92400E;
@@ -164,6 +164,22 @@ textarea.v26-in{height:auto;min-height:80px;padding:10px 12px;resize:vertical}
   .v26-kal .sel{min-height:56px;padding:4px}.v26-kal .tanda{font-size:9px;padding:0 3px}
   .v26-kanvas>*{grid-column:1/-1!important}.v26-hp{display:initial}.v26-desktop{display:none!important}
 }
+
+/* ===== Absensi bulanan: matriks karyawan × tanggal (v2.6.1-a) ===== */
+.v26 .v26-abs{max-height:70vh}
+.v26 .v26-abs table{border-collapse:separate;border-spacing:0;font-size:12px;width:max-content;min-width:100%}
+.v26 .v26-abs th,.v26 .v26-abs td{padding:5px 4px;border-bottom:1px solid var(--bd);background:var(--sf);white-space:nowrap;text-align:center;vertical-align:middle}
+.v26 .v26-abs thead th{position:sticky;top:0;z-index:2;background:var(--sf2);font-weight:600;color:var(--mt)}
+.v26 .v26-abs .v26-abs-hari{min-width:34px}.v26 .v26-abs .v26-abs-hari small{display:block;font-weight:400;font-size:10px}
+.v26 .v26-abs .libur{background:var(--sf2)}.v26 .v26-abs th.libur{color:var(--er)}
+.v26 .v26-abs .v26-abs-nama{position:sticky;left:0;z-index:1;text-align:left;min-width:170px;max-width:210px;overflow:hidden;text-overflow:ellipsis;border-right:1px solid var(--bd2);padding:6px 10px}
+.v26 .v26-abs thead .v26-abs-nama{z-index:3}
+.v26 .v26-abs td.kanan,.v26 .v26-abs th.kanan{text-align:right;padding:5px 8px}
+.v26 .v26-abs td.v26-abs-sel[role=button]{cursor:pointer}.v26 .v26-abs td.v26-abs-sel[role=button]:hover,.v26 .v26-abs td.v26-abs-sel:focus-visible{outline:2px solid var(--pr);outline-offset:-2px}
+.v26 .v26-abs .v26-chip{min-width:26px;justify-content:center;padding:0 4px;height:20px;font-size:11px}
+.v26 .v26-abs-kosong{color:var(--rd)}
+.v26 .v26-abs tfoot td{position:sticky;bottom:0;background:var(--sf2);border-top:1px solid var(--bd2);font-weight:600}.v26 .v26-abs tfoot tr:first-child td{bottom:31px}
+@media (max-width:820px){.v26 .v26-abs .v26-abs-nama{min-width:120px;max-width:130px}.v26 .v26-abs{max-height:62vh}}
 
 /* ===== Halaman depan dan layar Masuk (versi REST) ===== */
 .v26 .lp{min-height:100vh;display:flex;flex-direction:column}

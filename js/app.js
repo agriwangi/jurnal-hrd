@@ -2,9 +2,9 @@
 (function () {
   'use strict';
   var h = V26.h, ikon = V26.ikon, api = V26.api;
-  var MENU = [['', 'Ringkasan'], ['dasbor', 'Dashboard', 'dasbor'], ['', 'Pengaturan'], ['master', 'Master Data', 'master'], ['impor', 'Impor Data', 'impor', 'impor'], ['pengguna', 'Pengguna', 'kunci', 'pengguna.kelola'], ['', 'Grafik'], ['grafik', 'Pengaturan Grafik', 'grafik'], ['galeri', 'Galeri 42 Model', 'galeri'], ['penata', 'Penata Dashboard', 'geser']];
-  var BAWAH = [['dasbor', 'Dashboard', 'dasbor'], ['master', 'Master', 'master'], ['impor', 'Impor', 'impor', 'impor'], ['grafik', 'Grafik', 'grafik'], ['galeri', 'Galeri', 'galeri']];
-  var JUDUL = { dasbor: 'Dashboard', master: 'Master Data', impor: 'Impor Data', grafik: 'Pengaturan Grafik', galeri: 'Galeri Model Grafik', penata: 'Penata Dashboard', pengguna: 'Pengguna' };
+  var MENU = [['', 'Ringkasan'], ['dasbor', 'Dashboard', 'dasbor'], ['', 'Kehadiran'], ['absensi', 'Absensi', 'kalender'], ['', 'Pengaturan'], ['master', 'Master Data', 'master'], ['impor', 'Impor Data', 'impor', 'impor'], ['pengguna', 'Pengguna', 'kunci', 'pengguna.kelola'], ['', 'Grafik'], ['grafik', 'Pengaturan Grafik', 'grafik'], ['galeri', 'Galeri 42 Model', 'galeri'], ['penata', 'Penata Dashboard', 'geser']];
+  var BAWAH = [['dasbor', 'Dashboard', 'dasbor'], ['absensi', 'Absensi', 'kalender'], ['master', 'Master', 'master'], ['impor', 'Impor', 'impor', 'impor'], ['grafik', 'Grafik', 'grafik'], ['galeri', 'Galeri', 'galeri']];
+  var JUDUL = { dasbor: 'Dashboard', absensi: 'Absensi Bulanan', master: 'Master Data', impor: 'Impor Data', grafik: 'Pengaturan Grafik', galeri: 'Galeri Model Grafik', penata: 'Penata Dashboard', pengguna: 'Pengguna' };
   var IZIN_RUTE = { impor: 'impor', pengguna: 'pengguna.kelola' };
   var akar, halaman, remah, menuEl, bawahEl, kerangkaAda = false;
 
@@ -22,6 +22,7 @@
     document.title = JUDUL[aktif] + ' — Jurnal HRD'; V26.kosongkan(halaman); window.scrollTo(0, 0);
     var M = V26.modul;
     if (aktif === 'master') M.master.buka(halaman, p[1]);
+    else if (aktif === 'absensi') M.absensi.buka(halaman);
     else if (aktif === 'impor') M.impor.buka(halaman);
     else if (aktif === 'grafik') M.grafik.bukaAtur(halaman, p[1] || null, p[2] || null);
     else if (aktif === 'galeri') M.grafik.bukaGaleri(halaman);
@@ -47,13 +48,13 @@
       ['dasbor', 'Nyaman di HP', 'Tampilan menyesuaikan layar: menu pindah ke bawah, tabel menjadi kartu, dengan pilihan tema terang dan gelap.']];
     V26.isi(akar, h('div.lp', null,
       h('header.lp-atas', null, h('div.v26-baris', null, h('div.v26-logo', null, 'JH'), h('b', { gaya: 'font-size:16px' }, 'Jurnal HRD')), h('div.v26-baris', null, tombolTema(), h('a.v26-btn.utama', { href: '#/masuk' }, 'Masuk'))),
-      h('section.lp-hero', null, h('span.v26-lencana.pr', null, 'Versi 2.6.0 · Tahap 1'), h('h1', null, 'Data karyawan, absensi, dan payroll yang rapi dan bisa dipercaya'),
+      h('section.lp-hero', null, h('span.v26-lencana.pr', null, 'Versi 2.6.1 · Absensi'), h('h1', null, 'Data karyawan, absensi, dan payroll yang rapi dan bisa dipercaya'),
         h('p', null, 'Jurnal HRD membantu tim HR mengelola data dari satu tempat: cepat diisi, mudah diperiksa, dan setiap angka bisa ditelusuri asalnya.'),
         h('div.v26-baris.bungkus', { gaya: 'justify-content:center' }, h('a.v26-btn.utama', { href: '#/masuk', gaya: 'height:48px;padding:0 24px;font-size:15px' }, 'Masuk ke Aplikasi', ikon('kanan')), h('a.v26-btn', { href: '#fitur', gaya: 'height:48px;padding:0 20px', onclick: function (e) { e.preventDefault(); document.getElementById('fitur').scrollIntoView({ behavior: 'smooth' }); } }, 'Lihat Fitur'))),
       h('section.lp-fitur', { id: 'fitur' }, h('h2', null, 'Yang bisa dikerjakan sekarang'), h('div.v26-kisi.k3', null, FITUR.map(function (f) { return h('div.v26-kartu.isi', null, h('div.lp-ikon', null, ikon(f[0])), h('h3', { gaya: 'margin:10px 0 4px' }, f[1]), h('p.v26-redup', null, f[2])); }))),
       h('section.lp-fitur', null, h('h2', null, 'Mulai dalam tiga langkah'), h('div.v26-kisi.k3', null, [['1', 'Masuk', 'Pakai nama pengguna dan kata sandi dari Admin perusahaan Anda.'], ['2', 'Lengkapi Master Data', 'Isi langsung atau impor dari Excel yang sudah Anda punya.'], ['3', 'Pantau lewat Dashboard', 'Lihat ringkasan dan pilih model grafik yang paling mudah dibaca.']].map(function (l) {
         return h('div.v26-kartu.isi', null, h('div.lp-nomor', null, l[0]), h('h3', { gaya: 'margin:10px 0 4px' }, l[1]), h('p.v26-redup', null, l[2])); }))),
-      h('footer.lp-kaki', null, h('span', null, 'Jurnal HRD v2.6.0'), h('span', null, 'Dibuat oleh A Mustopa F · Tlp. 085956686001'))));
+      h('footer.lp-kaki', null, h('span', null, 'Jurnal HRD v2.6.1'), h('span', null, 'Dibuat oleh A Mustopa F · Tlp. 085956686001'))));
   }
 
   /* ---------- Layar Masuk ---------- */
@@ -99,7 +100,7 @@
     var akun = h('button.v26-avatar', { type: 'button', title: 'Akun: ' + user.nama, 'aria-label': 'Buka akun ' + user.nama, gaya: 'border:0;cursor:pointer' }, String(user.nama || '?').slice(0, 2).toUpperCase());
     akun.addEventListener('click', function () { laciAkun(user); });
     V26.isi(akar, h('div.v26-app', null,
-      h('aside.v26-sisi', null, h('div.v26-merek', null, h('div.v26-logo', null, 'JH'), h('div', null, h('b', null, 'Jurnal HRD'), h('div.v26-kecil.v26-redup', null, 'v2.6.0 · Tahap 1'))), menuEl, h('div.v26-kecil.v26-redup', { gaya: 'padding:12px 16px;border-top:1px solid var(--bd)' }, 'A Mustopa F · 085956686001')),
+      h('aside.v26-sisi', null, h('div.v26-merek', null, h('div.v26-logo', null, 'JH'), h('div', null, h('b', null, 'Jurnal HRD'), h('div.v26-kecil.v26-redup', null, 'v2.6.1-a'))), menuEl, h('div.v26-kecil.v26-redup', { gaya: 'padding:12px 16px;border-top:1px solid var(--bd)' }, 'A Mustopa F · 085956686001')),
       h('div.v26-utama', null, h('header.v26-atas', null, remah, h('div.v26-baris', null, contoh, h('div.v26-desktop', { gaya: 'text-align:right;line-height:15px' }, h('b.v26-kecil', null, user.nama), h('div.v26-kecil.v26-redup', null, user.peran)), akun, tombolTema())), halaman)), bawahEl);
     if (JH.boleh('admin')) api('ujiInfo').then(function (i) { if (!i.adaKaryawan) contoh.classList.remove('v26-sembunyi'); }, function () {});
   }

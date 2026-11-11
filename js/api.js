@@ -1,11 +1,11 @@
-/* Jurnal HRD v2.6.0-t1r3 — js/api.js: sesi dan pemanggil backend (fetch ke Apps Script /exec).
+/* Jurnal HRD v2.6.1-a — js/api.js: sesi dan pemanggil backend (fetch ke Apps Script /exec).
    Lapisan kecepatan: (1) permintaan baca yang berbarengan digabung jadi SATU perjalanan ke server,
    (2) hasil baca disimpan 60 detik sehingga pindah menu terasa seketika, (3) simpanan dibuang begitu ada perubahan data,
    (4) baca diulang otomatis bila jaringan putus, (5) server dibangunkan saat halaman dibuka, (6) waktu tiap panggilan dicatat (JH.perf()). */
 var JH = (function () {
   'use strict';
   var KUNCI = 'jurnalhrd-sesi', SEGAR_MS = 60000, JENDELA_MS = 12;
-  var BACA = { mdRingkas: 1, mdDaftar: 1, mdPilihan: 1, mdPerluDipetakan: 1, mdKalender: 1, mdEkspor: 1, mdKenaikanSimulasi: 1, valKolom: 1, valRiwayat: 1, grAwal: 1, ujiInfo: 1 };
+  var BACA = { mdRingkas: 1, mdDaftar: 1, mdPilihan: 1, mdPerluDipetakan: 1, mdKalender: 1, mdEkspor: 1, mdKenaikanSimulasi: 1, valKolom: 1, valRiwayat: 1, grAwal: 1, ujiInfo: 1, absBulan: 1 };
   var SESI = {
     baca: function () { try { return JSON.parse(localStorage.getItem(KUNCI) || 'null'); } catch (e) { return null; } },
     simpan: function (s) { try { localStorage.setItem(KUNCI, JSON.stringify(s)); } catch (e) {} },
