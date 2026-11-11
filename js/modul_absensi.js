@@ -20,7 +20,7 @@ V26.modul.absensi = (function () {
     var pilihTh = h('select.v26-in', { 'aria-label': 'Tahun', gaya: 'width:auto' }, thn.map(function (y) { return h('option', { value: y, selected: y === d.th }, y); }));
     function ganti() { st.bl = +pilihBl.value; st.th = +pilihTh.value; st.hal = 1; st.divisi = ''; muat(); }
     pilihBl.addEventListener('change', ganti); pilihTh.addEventListener('change', ganti);
-    var aksi = [pilihBl, pilihTh, h('button.v26-btn', { type: 'button', onclick: function (e) { V26.jalankan(e.currentTarget, unduh); } }, ikon('unduh'), 'Unduh'),
+    var aksi = [pilihBl, pilihTh, V26.modul.hadir ? h('a.v26-btn', { href: '#/kehadiran' }, ikon('riwayat'), 'Log Kehadiran') : null, h('button.v26-btn', { type: 'button', onclick: function (e) { V26.jalankan(e.currentTarget, unduh); } }, ikon('unduh'), 'Unduh'),
       d.bolehUbah ? h('button.v26-btn.utama', { type: 'button', onclick: laciUnggah }, ikon('impor'), 'Unggah Excel') : null];
     var sp = d.kode.filter(function (k) { return k.sp; }).map(function (k) { return k.k; }).join(' + ') || '(belum ada kode yang dihitung)';
     function ubin(l, v, k, gaya) { return h('div.v26-kartu.v26-ubin', { gaya: gaya || '' }, h('span.v26-kecil.v26-redup', null, l), h('span.nilai', null, v), h('span.v26-kecil.v26-redup', null, k)); }

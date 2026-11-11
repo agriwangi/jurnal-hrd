@@ -5,7 +5,7 @@
 var JH = (function () {
   'use strict';
   var KUNCI = 'jurnalhrd-sesi', SEGAR_MS = 60000, JENDELA_MS = 12;
-  var BACA = { mdRingkas: 1, mdDaftar: 1, mdPilihan: 1, mdPerluDipetakan: 1, mdKalender: 1, mdEkspor: 1, mdKenaikanSimulasi: 1, valKolom: 1, valRiwayat: 1, grAwal: 1, ujiInfo: 1, absBulan: 1 };
+  var BACA = { mdRingkas: 1, mdDaftar: 1, mdPilihan: 1, mdPerluDipetakan: 1, mdKalender: 1, mdEkspor: 1, mdKenaikanSimulasi: 1, valKolom: 1, valRiwayat: 1, grAwal: 1, ujiInfo: 1, absBulan: 1, hadirLog: 1 };
   var SESI = {
     baca: function () { try { return JSON.parse(localStorage.getItem(KUNCI) || 'null'); } catch (e) { return null; } },
     simpan: function (s) { try { localStorage.setItem(KUNCI, JSON.stringify(s)); } catch (e) {} },

@@ -1,4 +1,4 @@
-# Jurnal HRD v2.6.1-a — frontend
+# Jurnal HRD v2.6.2-a — frontend
 
 Frontend statis untuk GitHub Pages. Backend-nya Google Apps Script (JSON) dan tidak ada di repository ini.
 

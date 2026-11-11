@@ -5,6 +5,7 @@ var V26 = (function () {
   var NS = 'http://www.w3.org/2000/svg', modul = {}, akar = null;
   var IKON = {
     master: 'M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zM4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6',
+    lokasi: 'M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11zM12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z', kamera: 'M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1zM12 17a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z',
     impor: 'M12 15V4M8 8l4-4 4 4M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4', unduh: 'M12 4v11M8 11l4 4 4-4M4 19h16',
     grafik: 'M4 20V10M10 20V4M16 20v-7M22 20H2', galeri: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z', dasbor: 'M3 3h8v10H3zM13 3h8v6h-8zM13 11h8v10h-8zM3 15h8v6H3z',
     tambah: 'M12 5v14M5 12h14', ubah: 'M4 20h4L19 9l-4-4L4 16zM14 6l4 4', tutup: 'M6 6l12 12M18 6L6 18', cari: 'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4',
@@ -249,6 +250,6 @@ var V26 = (function () {
     return c;
   }
   return { modul: modul, h: h, isi: isi, kosongkan: kosongkan, ikon: ikon, api: api, reqId: reqId, rp: rp, angka: angka, tunda: tunda, toast: toast, laci: laci, konfirmasi: konfirmasi, jalankan: jalankan,
-    formulir: formulir, laciFormulir: laciFormulir, tabel: tabel, galatMuat: galatMuat, rangkaBlok: rangkaBlok, bacaBerkas: bacaBerkas, unduhTabel: unduhTabel, unduhBlob: unduhBlob, uraiCsv: uraiCsv,
+    formulir: formulir, laciFormulir: laciFormulir, tabel: tabel, galatMuat: galatMuat, rangkaBlok: rangkaBlok, bacaBerkas: bacaBerkas, butuhXlsx: butuhXlsx, unduhTabel: unduhTabel, unduhBlob: unduhBlob, uraiCsv: uraiCsv,
     tema: tema, pasang: pasang, lencanaAktif: lencanaAktif, chipKode: chipKode, NS: NS, tglKeIso: tglKeIso, isoKeTgl: isoKeTgl, akar: function () { return akar; } };
 })();
