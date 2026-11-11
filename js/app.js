@@ -110,7 +110,7 @@
     var akun = h('button.v26-avatar', { type: 'button', title: 'Akun: ' + user.nama, 'aria-label': 'Buka akun ' + user.nama, gaya: 'border:0;cursor:pointer' }, String(user.nama || '?').slice(0, 2).toUpperCase());
     akun.addEventListener('click', function () { laciAkun(user); });
     V26.isi(akar, h('div.v26-app', null,
-      h('aside.v26-sisi', null, h('div.v26-merek', null, h('div.v26-logo', null, 'JH'), h('div', null, h('b', null, 'Jurnal HRD'), h('div.v26-kecil.v26-redup', null, 'v2.6.2-a'))), menuEl, h('div.v26-kecil.v26-redup', { gaya: 'padding:12px 16px;border-top:1px solid var(--bd)' }, 'A Mustopa F · 085956686001')),
+      h('aside.v26-sisi', null, h('div.v26-merek', null, h('div.v26-logo', null, 'JH'), h('div', null, h('b', null, 'Jurnal HRD'), h('div.v26-kecil.v26-redup', null, 'v2.6.2-b'))), menuEl, h('div.v26-kecil.v26-redup', { gaya: 'padding:12px 16px;border-top:1px solid var(--bd)' }, 'A Mustopa F · 085956686001')),
       h('div.v26-utama', null, h('header.v26-atas', null, remah, h('div.v26-baris', null, contoh, h('div.v26-desktop', { gaya: 'text-align:right;line-height:15px' }, h('b.v26-kecil', null, user.nama), h('div.v26-kecil.v26-redup', null, user.peran)), akun, tombolTema())), halaman)), bawahEl);
     if (JH.boleh('admin')) api('ujiInfo').then(function (i) { if (!i.adaKaryawan) contoh.classList.remove('v26-sembunyi'); }, function () {});
   }

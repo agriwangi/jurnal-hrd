@@ -29,7 +29,7 @@ V26.modul.hadir = (function () {
   function buatPeta(el, lat, lng, zum) {
     return muatPeta().then(function (L) {
       var peta = L.map(el, { zoomControl: true, attributionControl: true }).setView([lat, lng], zum || 16);
-      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap' }).addTo(peta);
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, referrerPolicy: 'strict-origin-when-cross-origin', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>' }).addTo(peta);
       setTimeout(function () { peta.invalidateSize(); }, 150);
       bersihkan.push(function () { peta.remove(); });
       return { L: L, peta: peta };
@@ -289,7 +289,7 @@ V26.modul.hadir = (function () {
     });
     var pusat = lama ? [lama.lat, lama.lng] : (d.area[0] ? [d.area[0].lat, d.area[0].lng] : [-6.9, 107.6]);
     muatPeta().then(function (Lf) {
-      var peta = Lf.map(elPeta).setView(pusat, lama || d.area[0] ? 16 : 11); Lf.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap' }).addTo(peta);
+      var peta = Lf.map(elPeta).setView(pusat, lama || d.area[0] ? 16 : 11); Lf.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, referrerPolicy: 'strict-origin-when-cross-origin', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>' }).addTo(peta);
       P = { L: Lf, peta: peta }; setTimeout(function () { peta.invalidateSize(); }, 200);
       gambarArea(P, d.area.filter(function (a) { return !lama || a.kode !== lama.kode; }), '#64748B');
       peta.on('click', function (e) { f.lat.value = e.latlng.lat.toFixed(6); f.lng.value = e.latlng.lng.toFixed(6); tandai(false); });
