@@ -12,6 +12,12 @@ V26.modul.master = (function () {
     st.tabEl = h('div.v26-tab', { role: 'tablist' }); st.wadah = h('div.v26-kolom', { gaya: 'margin-top:16px' });
     V26.isi(el, st.tabEl, st.wadah);
     gambarTab(); V26.rangkaBlok(st.wadah, 5);
+    if (window.__v26Jauh) {   // versi REST: minta data layar ini berbarengan dengan ringkasan, supaya cukup SATU perjalanan ke server
+      var butuh = { jabatan: ['divisi', 'golongan', 'jabatan'], divisi: ['divisi'], kalender: ['divisi'] }[st.sub], diam = function () {};
+      if (butuh) api('mdPilihan', butuh).then(null, diam);
+      if (['jabatan', 'golongan', 'divisi', 'status'].indexOf(st.sub) >= 0) api('mdDaftar', st.sub, { hal: 1, ukuran: 25, q: '', filter: {}, aktif: '' }).then(null, diam);
+      if (st.sub === 'kodeabsen') api('mdDaftar', 'kodeabsen', { ukuran: 200, aktif: 'semua' }).then(null, diam);
+    }
     muatRingkas().then(function () { halaman(); }, function (e) { V26.galatMuat(st.wadah, e, function () { buka(el, sub); }); });
   }
   function muatRingkas() { return api('mdRingkas').then(function (r) { st.ringkas = r; gambarTab(); return r; }); }
