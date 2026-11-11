@@ -50,7 +50,8 @@ V26.modul.hadir = (function () {
   }
   function selfie(el, d) {
     var kepala = h('div', null, h('h1', null, 'Absen Selfie'), h('p.v26-redup', { gaya: 'margin-top:2px' }, d.nama + (d.reg ? ' · No.REG ' + d.reg : '')));
-    if (!d.reg) return V26.isi(el, kepala, h('div.v26-kartu', null, h('div.v26-kosong', null, ikon('orang'), h('p', null, 'Akun Anda belum ditautkan ke No.REG karyawan.'), h('p.v26-kecil.v26-redup', null, 'Minta Admin mengisi No.REG Anda di menu Pengguna, lalu keluar dan masuk lagi.'))));
+    if (!d.reg) return V26.isi(el, kepala, h('div.v26-kartu', null, h('div.v26-kosong', null, ikon('orang'), h('p', null, 'Akun Anda belum ditautkan ke No.REG karyawan.'), h('p.v26-kecil.v26-redup', null, 'Minta Admin mengisi No.REG Anda di menu Pengguna, lalu keluar dan masuk lagi.'), JH.boleh('super.pengaturan') ? h('a.v26-btn.utama', { href: '#/pengaturan/akun' }, ikon('orang'), 'Tautkan Akun Saya ke No.REG') : null)));
+    if (d.izinAkun === false) return V26.isi(el, kepala, h('div.v26-kartu', null, h('div.v26-kosong', null, ikon('kamera'), h('p', null, 'Absen selfie untuk akun Anda dimatikan oleh Super Admin.'), h('p.v26-kecil.v26-redup', null, 'Hubungi Super Admin bila ini keliru.'))));
     if (!d.aktif) return V26.isi(el, kepala, h('div.v26-kartu', null, h('div.v26-kosong', null, ikon('kamera'), h('p', null, 'Absen selfie sedang dimatikan oleh Admin.'))));
     if (!d.area.length) return V26.isi(el, kepala, h('div.v26-kartu', null, h('div.v26-kosong', null, ikon('lokasi'), h('p', null, 'Titik lokasi absen belum diatur.'), h('p.v26-kecil.v26-redup', null, JH.boleh('absensi.atur') ? 'Buka menu Titik Lokasi Absen untuk menambahkannya.' : 'Hubungi Admin perusahaan Anda.'), JH.boleh('absensi.atur') ? h('a.v26-btn.utama', { href: '#/lokasi' }, ikon('lokasi'), 'Atur Titik Lokasi') : null)));
 

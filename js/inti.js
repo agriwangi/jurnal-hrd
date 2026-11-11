@@ -15,6 +15,7 @@ var V26 = (function () {
     kalender: 'M4 6h16v15H4zM4 10h16M8 3v5M16 3v5', riwayat: 'M4 12a8 8 0 1 0 2.5-5.8M4 4v5h5M12 8v5l3 2', hapus: 'M5 7h14M9 7V4h6v3M7 7l1 13h8l1-13', tukar: 'M4 8h14l-3-3M20 16H6l3 3',
     berkas: 'M7 3h7l5 5v13H7zM14 3v5h5', tabel: 'M4 5h16v14H4zM4 10h16M4 15h16M10 5v14', gambar: 'M4 5h16v14H4zM4 16l5-5 4 4 3-3 4 4M9 9v.5', penuh: 'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5',
     mata: 'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z', geser: 'M9 6v.5M15 6v.5M9 12v.5M15 12v.5M9 18v.5M15 18v.5', panah: 'M5 12h14M13 6l6 6-6 6',
+    gir: 'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z',
     kotak: 'M4 7l8-4 8 4v10l-8 4-8-4zM4 7l8 4 8-4M12 11v10', simpan: 'M5 4h11l3 3v13H5zM8 4v5h7M8 20v-6h8v6', orang: 'M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM4 21a8 8 0 0 1 16 0', jam: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2'
   };
   function ikon(n, kelas) {
@@ -212,8 +213,32 @@ var V26 = (function () {
     if (sel !== '' || row.length) { row.push(sel); baris.push(row); }
     return baris;
   }
+  /** Membaca sel Excel APA ADANYA: tanggal jadi YYYY-MM-DD (tidak tergantung format tampilan), angka bulat tanpa eksponen
+      (nomor panjang tetap utuh bila disimpan sebagai teks di Excel), teks tetap teks. Dipakai untuk Database Karyawan. */
+  function selMentah(ws) {
+    var ref = ws && ws['!ref']; if (!ref) return [];
+    var rg = XLSX.utils.decode_range(ref), baris = [], r, c, akhir = -1;
+    function p2(n) { return (n < 10 ? '0' : '') + n; }
+    function teks(sel) {
+      if (!sel || sel.v == null) return '';
+      if (sel.t === 'n') {
+        if (sel.z && XLSX.SSF.is_date(sel.z)) { var d = XLSX.SSF.parse_date_code(sel.v); if (d && d.y > 0) return d.y + '-' + p2(d.m) + '-' + p2(d.d); }
+        if (isFinite(sel.v)) return Number.isInteger(sel.v) ? String(Math.round(sel.v)) : String(sel.v);
+      }
+      if (sel.t === 'd' && sel.v instanceof Date) return sel.v.getFullYear() + '-' + p2(sel.v.getMonth() + 1) + '-' + p2(sel.v.getDate());
+      if (sel.t === 'b') return sel.v ? 'TRUE' : 'FALSE';
+      if (sel.t === 'e') return '';
+      return String(sel.v);
+    }
+    for (r = rg.s.r; r <= rg.e.r; r++) {
+      var row = [], ada = false;
+      for (c = rg.s.c; c <= Math.min(rg.e.c, rg.s.c + 99); c++) { var t = teks(ws[XLSX.utils.encode_cell({ r: r, c: c })]); if (t !== '') ada = true; row.push(t); }
+      baris.push(row); if (ada) akhir = baris.length - 1;
+    }
+    return baris.slice(0, akhir + 1);
+  }
   /** @return Promise<{nama, lembar:[{nama, baris:[[teks]]}]}> — semua sel dibaca sebagai teks apa adanya. */
-  function bacaBerkas(file) {
+  function bacaBerkas(file, mentah) {
     var nm = file.name.toLowerCase();
     if (file.size > 8 * 1024 * 1024) return Promise.reject(new Error('Berkas lebih dari 8 MB. Pecah menjadi beberapa berkas.'));
     if (/\.(csv|txt)$/.test(nm)) return new Promise(function (ok, gagal) { var r = new FileReader(); r.onload = function () { ok({ nama: file.name, lembar: [{ nama: 'Lembar 1', baris: uraiCsv(String(r.result)) }] }); }; r.onerror = function () { gagal(new Error('Berkas tidak bisa dibaca.')); }; r.readAsText(file); });
@@ -223,7 +248,8 @@ var V26 = (function () {
         var r = new FileReader();
         r.onload = function () {
           try {
-            var wb = XLSX.read(r.result, { type: 'array', cellDates: false, raw: false });
+            var wb = XLSX.read(r.result, { type: 'array', cellDates: false, cellNF: !!mentah, raw: false });
+            if (mentah) { ok({ nama: file.name, lembar: wb.SheetNames.map(function (n) { return { nama: n, baris: selMentah(wb.Sheets[n]) }; }) }); return; }
             ok({ nama: file.name, lembar: wb.SheetNames.map(function (n) { return { nama: n, baris: XLSX.utils.sheet_to_json(wb.Sheets[n], { header: 1, raw: false, defval: '', blankrows: true }).map(function (b) { return b.map(function (v) { return v == null ? '' : String(v); }); }) }; }) });
           } catch (e) { gagal(new Error('Berkas Excel tidak bisa dibaca. Pastikan berkas tidak rusak atau terkunci sandi.')); }
         };

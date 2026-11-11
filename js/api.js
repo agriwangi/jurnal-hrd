@@ -1,11 +1,11 @@
-/* Jurnal HRD v2.6.1-a — js/api.js: sesi dan pemanggil backend (fetch ke Apps Script /exec).
+/* Jurnal HRD v2.7.0-a — js/api.js: sesi dan pemanggil backend (fetch ke Apps Script /exec).
    Lapisan kecepatan: (1) permintaan baca yang berbarengan digabung jadi SATU perjalanan ke server,
    (2) hasil baca disimpan 60 detik sehingga pindah menu terasa seketika, (3) simpanan dibuang begitu ada perubahan data,
    (4) baca diulang otomatis bila jaringan putus, (5) server dibangunkan saat halaman dibuka, (6) waktu tiap panggilan dicatat (JH.perf()). */
 var JH = (function () {
   'use strict';
   var KUNCI = 'jurnalhrd-sesi', SEGAR_MS = 60000, JENDELA_MS = 12;
-  var BACA = { mdRingkas: 1, mdDaftar: 1, mdPilihan: 1, mdPerluDipetakan: 1, mdKalender: 1, mdEkspor: 1, mdKenaikanSimulasi: 1, valKolom: 1, valRiwayat: 1, grAwal: 1, ujiInfo: 1, absBulan: 1, hadirLog: 1 };
+  var BACA = { mdRingkas: 1, mdDaftar: 1, mdPilihan: 1, mdPerluDipetakan: 1, mdKalender: 1, mdEkspor: 1, mdKenaikanSimulasi: 1, valKolom: 1, valRiwayat: 1, grAwal: 1, ujiInfo: 1, absBulan: 1, hadirLog: 1, karDaftar: 1, karDetail: 1 };
   var SESI = {
     baca: function () { try { return JSON.parse(localStorage.getItem(KUNCI) || 'null'); } catch (e) { return null; } },
     simpan: function (s) { try { localStorage.setItem(KUNCI, JSON.stringify(s)); } catch (e) {} },
@@ -55,9 +55,9 @@ var JH = (function () {
     janji.then(function (d) { e.d = d; }, function () { if (simpanan[k] === e) delete simpanan[k]; });
     return janji.then(salin);
   };
-  function masuk(username, password) { lupa(); return panggil('login', { username: username, password: password }).then(function (d) { SESI.simpan({ token: d.token, user: d.user }); return d.user; }); }
+  function masuk(username, password, sandiBaru) { lupa(); return panggil('login', { username: username, password: password, sandiBaru: sandiBaru || '' }).then(function (d) { SESI.simpan({ token: d.token, user: d.user }); return d.user; }); }
   function keluar() { return panggil('logout').then(null, function () {}).then(function () { SESI.hapus(); lupa(); }); }
-  function boleh(izin) { var s = SESI.baca(), d = s && s.user ? s.user.izin || [] : []; return d.indexOf('*') >= 0 || d.indexOf(izin) >= 0; }
+  function boleh(izin) { var s = SESI.baca(), d = s && s.user ? s.user.izin || [] : []; if (String(izin).indexOf('super.') === 0) return !!(s && s.user && s.user.peran === 'Super Admin'); return d.indexOf('*') >= 0 || d.indexOf(izin) >= 0; }   // izin 'super.*' hanya untuk Super Admin
   /** Membangunkan server lebih awal supaya klik pertama tidak menanggung waktu "bangun" Apps Script. */
   function bangunkan() { if (siap()) { try { fetch(GAS_URL + '?action=ping&t=' + Date.now(), { mode: 'no-cors', cache: 'no-store' }).catch(function () {}); } catch (e) {} } }
   bangunkan();
